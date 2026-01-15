@@ -89,8 +89,6 @@ This will:
 |----------|-------|
 | **Supply** | 777 unique Clawds |
 | **Network** | Solana Mainnet |
-| **Candy Machine** | `bBRSLLFmvyYhquSpAgSS1dbePvyZniHtMT5Ki1ba8Xr` |
-| **Collection** | `AkcKbQ5gXkg6Kz7ESWKAJb2i8J7ZKHxDRBZ7JqQ9vTGE` |
 
 ---
 
