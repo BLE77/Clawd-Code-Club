@@ -2,7 +2,23 @@
 
 <div align="center">
 
-![Clawd](https://nftstorage.link/ipfs/bafybeiamenrwy6dopfpqbvohsvkt74avqb4riig6tu3p4bh6gdcj7ohuty/0001.png)
+```
+   ██████╗ ██████╗ ██████╗
+  ██╔════╝██╔════╝██╔════╝
+  ██║     ██║     ██║
+  ██║     ██║     ██║
+  ╚██████╗╚██████╗╚██████╗
+   ╚═════╝ ╚═════╝ ╚═════╝
+   CLAUDE   CODE   CLUB
+```
+
+![Clawd](https://ipfs.io/ipfs/bafybeias5ulkvhpkj5z2s7pqcvpqbw4ehebxbi6wnragvnmmuyabtxdyay/0001.png)
+
+```
+     * ▐▛███▜▌ *
+    * ▝▜█████▛▘ *
+     *  ▘▘ ▝▝  *
+```
 
 **Proof you ship with Claude**
 
