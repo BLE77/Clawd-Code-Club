@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mint Clawd | Claude Code Club</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/@fontsource/cascadia-code@5.0.3/index.css" rel="stylesheet">
+
+  <!-- Solana Web3.js -->
+  <script src="https://unpkg.com/@solana/web3.js@1.87.6/lib/index.iife.min.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">
+          <span class="logo-bracket">[</span>
+          <span class="logo-text">CLAUDE CODE CLUB</span>
+          <span class="logo-bracket">]</span>
+        </div>
+        <div class="header-right">
+          <a href="https://x.com/claudecodeclub" target="_blank" class="header-social">X</a>
+          <div class="header-status mainnet">
+            <span class="status-dot"></span>
+            <span class="status-text">Mainnet</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- State 1: Connect Wallet -->
+      <section id="state-welcome" class="state active">
+        <div class="terminal-window">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+            <span class="terminal-title">clawd_minter.exe</span>
+          </div>
+          <div class="terminal-body">
+            <div class="ascii-logo">
+<pre class="logo-art">    ██████╗ ██████╗ ██████╗
+   ██╔════╝██╔════╝██╔════╝
+   ██║     ██║     ██║
+   ██║     ██║     ██║
+   ╚██████╗╚██████╗╚██████╗
+    ╚═════╝ ╚═════╝ ╚═════╝
+     CLAUDE   CODE   CLUB</pre>
+            </div>
+            <div class="welcome-content">
+              <div class="clawd-preview-container">
+                <div class="clawd-preview artwork-showcase">
+                  <iframe id="showcase-iframe" src="https://nftstorage.link/ipfs/bafybeiamenrwy6dopfpqbvohsvkt74avqb4riig6tu3p4bh6gdcj7ohuty/0001.html" frameborder="0"></iframe>
+                </div>
+                <div class="preview-label">777 Unique Clawds</div>
+              </div>
+
+              <div class="welcome-text">
+                <div class="typewriter">
+                  <p class="terminal-line"><span class="prompt">$</span> Initializing Claude Code Club...</p>
+                  <p class="terminal-line"><span class="prompt">$</span> Loading candy machine...</p>
+                  <p class="terminal-line success"><span class="prompt">></span> Ready to mint!</p>
+                </div>
+
+                <div class="info-block">
+                  <div class="mint-stats">
+                    <div class="stat-item">
+                      <span class="stat-label">Price:</span>
+                      <span class="stat-value highlight">0.1 SOL</span>
+                    </div>
+                  </div>
+                  <p class="dim">Connect your Solana wallet to mint your unique Clawd.</p>
+                </div>
+              </div>
+
+              <button id="btn-connect-wallet" class="btn btn-primary">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="6" width="20" height="14" rx="2"/>
+                  <path d="M16 14a2 2 0 100-4 2 2 0 000 4z"/>
+                  <path d="M2 10h20"/>
+                </svg>
+                <span>Connect Wallet</span>
+              </button>
+              <p class="wallet-note">Supports Phantom & Solflare</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- State 2: Ready to Mint -->
+      <section id="state-mint" class="state">
+        <div class="terminal-window wide">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+            <span class="terminal-title">mint_clawd.exe</span>
+          </div>
+          <div class="terminal-body">
+            <div class="mint-content">
+              <div class="clawd-display">
+                <div class="clawd-frame ready artwork-frame" style="display: flex; align-items: center; justify-content: center; background: #0a0a0f; width: 256px; height: 256px;">
+                  <div style="text-align: center; padding: 20px;">
+                    <div style="font-size: 48px; margin-bottom: 15px;">?</div>
+                    <p style="color: #00d4aa; font-size: 14px; margin-bottom: 8px;">Mystery Clawd</p>
+                    <p style="color: #606070; font-size: 11px;">1 of 777 unique Clawds</p>
+                  </div>
+                  <div class="mint-glow"></div>
+                </div>
+              </div>
+
+              <div class="mint-panel">
+                <h3 class="mint-title">Ready to Mint</h3>
+
+                <div class="wallet-info">
+                  <div class="wallet-row">
+                    <span class="wallet-label">Wallet:</span>
+                    <span class="wallet-address" id="wallet-address">--</span>
+                  </div>
+                  <div class="wallet-row">
+                    <span class="wallet-label">Balance:</span>
+                    <span class="wallet-balance" id="wallet-balance">-- SOL</span>
+                  </div>
+                </div>
+
+                <div class="mint-details">
+                  <div class="detail-row">
+                    <span class="detail-label">Mint Price:</span>
+                    <span class="detail-value highlight">0.1 SOL</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Network Fee:</span>
+                    <span class="detail-value">~0.00001 SOL</span>
+                  </div>
+                  <div class="detail-row total">
+                    <span class="detail-label">Total:</span>
+                    <span class="detail-value">~0.10001 SOL</span>
+                  </div>
+                </div>
+
+                <div class="mint-warning">
+                  <svg class="warning-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2L1 21h22L12 2zm0 3.17L20.83 19H3.17L12 5.17zM11 10v4h2v-4h-2zm0 6v2h2v-2h-2z"/>
+                  </svg>
+                  <span>Your Clawd will be minted on Solana Mainnet.</span>
+                </div>
+
+                <button id="btn-mint" class="btn btn-mint">
+                  <span class="mint-btn-text">Mint Clawd</span>
+                  <span class="mint-btn-price">0.1 SOL</span>
+                </button>
+
+                <button id="btn-disconnect" class="btn btn-secondary btn-small">
+                  Disconnect Wallet
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- State 3: Minting -->
+      <section id="state-minting" class="state">
+        <div class="terminal-window">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+            <span class="terminal-title">minting.exe</span>
+          </div>
+          <div class="terminal-body">
+            <div class="analyzing-content">
+              <div class="loader-container">
+                <div class="claude-loader">
+                  <span class="loader-spinner" id="loader-spinner">*</span>
+                  <span class="loader-word" id="loader-word">Minting...</span>
+                </div>
+              </div>
+
+              <div class="analyzing-logs">
+                <p class="log-line" id="mint-log-1"><span class="prompt">$</span> Building transaction...</p>
+                <p class="log-line" id="mint-log-2"><span class="prompt">$</span> Waiting for wallet approval...</p>
+                <p class="log-line" id="mint-log-3"><span class="prompt">$</span> Sending to network...</p>
+                <p class="log-line" id="mint-log-4"><span class="prompt">$</span> Confirming transaction...</p>
+              </div>
+
+              <div class="progress-bar">
+                <div class="progress-fill" id="mint-progress"></div>
+              </div>
+              <p class="progress-text" id="mint-status">Preparing your Clawd...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- State 4: Success -->
+      <section id="state-success" class="state">
+        <div class="terminal-window">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+            <span class="terminal-title">mint_success.exe</span>
+          </div>
+          <div class="terminal-body">
+            <div class="success-content">
+              <div id="confetti-container" class="confetti-container"></div>
+
+              <div class="success-header">
+                <div class="success-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                    <path d="M22 4L12 14.01l-3-3"/>
+                  </svg>
+                </div>
+                <h2 class="success-title">Minted Successfully!</h2>
+                <p class="success-subtitle">Welcome to the Claude Code Club</p>
+              </div>
+
+              <div class="minted-clawd">
+                <div class="wallet-check-message">
+                  <p style="color: #00d4aa; font-size: 16px; margin-bottom: 10px;">Your unique Clawd is now in your wallet!</p>
+                  <p style="color: #a0a0b0; font-size: 13px;">Open your wallet to see which Clawd you minted</p>
+                </div>
+              </div>
+
+              <div class="tx-info">
+                <div class="tx-row">
+                  <span class="tx-label">Transaction:</span>
+                  <a href="#" class="tx-link" id="tx-link" target="_blank">
+                    <span id="tx-hash">--</span>
+                    <svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+                      <path d="M15 3h6v6"/>
+                      <path d="M10 14L21 3"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+
+              <div class="success-actions">
+                <a href="#" class="btn btn-secondary" id="btn-view-explorer" target="_blank">
+                  <span>View on Explorer</span>
+                </a>
+                <button class="btn btn-primary" id="btn-share">
+                  <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="18" cy="5" r="3"/>
+                    <circle cx="6" cy="12" r="3"/>
+                    <circle cx="18" cy="19" r="3"/>
+                    <path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/>
+                  </svg>
+                  <span>Share</span>
+                </button>
+              </div>
+
+              <div class="community-cta">
+                <p class="community-text">Join the community</p>
+                <a href="https://x.com/i/communities/2008805891269931266" target="_blank" class="btn btn-community">
+                  <span class="x-logo">X</span>
+                  <span>Request to Join</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <p class="footer-text">
+          <span class="bracket">[</span>
+          Built with Claude Code
+          <span class="bracket">]</span>
+        </p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Artwork showcase rotation - ACTUAL 777 NFTs from IPFS -->
+  <script>
+    // IPFS gateway and CID for HTML NFTs
+    const IPFS_GATEWAY = 'https://nftstorage.link/ipfs';
+    const HTML_CID = 'bafybeiamenrwy6dopfpqbvohsvkt74avqb4riig6tu3p4bh6gdcj7ohuty';
+
+    // Show random ACTUAL NFTs from the collection (0001-0777) via IPFS
+    function getRandomNftPath() {
+      const id = Math.floor(Math.random() * 777) + 1;
+      return `${IPFS_GATEWAY}/${HTML_CID}/${String(id).padStart(4, '0')}.html`;
+    }
+
+    // Curated showcase of interesting NFTs from the collection
+    const featuredNfts = [
+      `${IPFS_GATEWAY}/${HTML_CID}/0001.html`,  // Full Diamond (Legendary)
+      `${IPFS_GATEWAY}/${HTML_CID}/0002.html`,  // Full Diamond
+      `${IPFS_GATEWAY}/${HTML_CID}/0010.html`,  // Diamond Crown
+      `${IPFS_GATEWAY}/${HTML_CID}/0020.html`,  // Diamond Wizard
+      `${IPFS_GATEWAY}/${HTML_CID}/0050.html`,  // Gold Crown
+      `${IPFS_GATEWAY}/${HTML_CID}/0100.html`,  // Gold tier
+      `${IPFS_GATEWAY}/${HTML_CID}/0200.html`,  // Various
+      `${IPFS_GATEWAY}/${HTML_CID}/0300.html`,
+      `${IPFS_GATEWAY}/${HTML_CID}/0400.html`,
+      `${IPFS_GATEWAY}/${HTML_CID}/0500.html`,
+      `${IPFS_GATEWAY}/${HTML_CID}/0600.html`,
+      `${IPFS_GATEWAY}/${HTML_CID}/0700.html`,
+      `${IPFS_GATEWAY}/${HTML_CID}/0777.html`,  // Last one!
+    ];
+
+    // Export for use in module script
+    window.showcaseArtworks = featuredNfts;
+
+    let currentShowcase = 0;
+
+    function rotateShowcase() {
+      const iframe = document.getElementById('showcase-iframe');
+      if (iframe) {
+        // Mix of featured + random
+        if (Math.random() > 0.5) {
+          iframe.src = getRandomNftPath();
+        } else {
+          currentShowcase = (currentShowcase + 1) % featuredNfts.length;
+          iframe.src = featuredNfts[currentShowcase];
+        }
+      }
+    }
+
+    // Start with a featured one (Full Diamond)
+    document.getElementById('showcase-iframe')?.setAttribute('src', featuredNfts[0]);
+
+    setInterval(rotateShowcase, 3000);
+  </script>
+
+  <!-- Wallet Connection (no external deps) -->
+  <script>
+    // Configuration - using public Solana RPC
+    const RPC = 'https://api.mainnet-beta.solana.com';
+    const LAMPORTS_PER_SOL = 1000000000;
+
+    // Candy Machine Config
+    const CANDY_MACHINE_ADDRESS = 'bBRSLLFmvyYhquSpAgSS1dbePvyZniHtMT5Ki1ba8Xr';
+    const COLLECTION_MINT = 'AkcKbQ5gXkg6Kz7ESWKAJb2i8J7ZKHxDRBZ7JqQ9vTGE';
+    const TREASURY_ADDRESS = 'FaMscSugcz4m7ctQg4TQhb6nsD255ehZXFVCU4pGm4Yp';
+
+    // State
+    let wallet = null;
+    let currentState = 'welcome';
+
+    // State management
+    function setState(newState) {
+      document.querySelectorAll('.state').forEach(el => el.classList.remove('active'));
+      document.getElementById(`state-${newState}`)?.classList.add('active');
+      currentState = newState;
+    }
+
+    // Connect wallet
+    async function connectWallet() {
+      try {
+        if (window.solana?.isPhantom) {
+          const response = await window.solana.connect();
+          wallet = { publicKey: response.publicKey, provider: window.solana };
+        } else if (window.solflare) {
+          await window.solflare.connect();
+          wallet = { publicKey: window.solflare.publicKey, provider: window.solflare };
+        } else {
+          alert('Please install Phantom or Solflare wallet');
+          return;
+        }
+
+        // Update wallet display
+        const addr = wallet.publicKey.toString();
+        document.getElementById('wallet-address').textContent =
+          `${addr.slice(0, 4)}...${addr.slice(-4)}`;
+
+        // Show balance as pending
+        document.getElementById('wallet-balance').textContent = '-- SOL';
+
+        setState('mint');
+      } catch (e) {
+        console.error('Connect error:', e);
+        alert(e.message || 'Failed to connect wallet');
+      }
+    }
+
+    // Disconnect wallet
+    function disconnectWallet() {
+      wallet = null;
+      setState('welcome');
+    }
+
+    // Mint - calls server API to build tx, then signs client-side
+    async function mint() {
+      if (!wallet) return;
+
+      setState('minting');
+      updateProgress(0, 'Building transaction...');
+
+      try {
+        // Get transaction from server
+        updateProgress(20, 'Building transaction...');
+        const txRes = await fetch('/api/candy-machine/mint', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ walletAddress: wallet.publicKey.toString() })
+        });
+
+        if (!txRes.ok) {
+          const err = await txRes.json();
+          throw new Error(err.message || 'Failed to build transaction');
+        }
+
+        const data = await txRes.json();
+
+        // Decode base64 transaction (browser-compatible)
+        updateProgress(40, 'Preparing transaction...');
+        const binaryString = atob(data.transaction);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+
+        // Create versioned transaction from bytes
+        const tx = solanaWeb3.VersionedTransaction.deserialize(bytes);
+
+        // Sign with wallet
+        updateProgress(50, 'Please approve in wallet...');
+        const signed = await wallet.provider.signTransaction(tx);
+
+        // Send signed tx to server (avoids CORS/origin issues with RPCs)
+        updateProgress(70, 'Sending to network...');
+        const serializedSigned = signed.serialize();
+        const base64Signed = btoa(String.fromCharCode(...serializedSigned));
+
+        const sendRes = await fetch('/api/send-transaction', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ transaction: base64Signed })
+        });
+
+        if (!sendRes.ok) {
+          const err = await sendRes.json();
+          throw new Error(err.message || 'Failed to send transaction');
+        }
+
+        const sendData = await sendRes.json();
+        const signature = sendData.signature;
+
+        // Wait for confirmation via server
+        updateProgress(85, 'Confirming transaction...');
+        const confirmRes = await fetch(`/api/confirm-transaction/${signature}`);
+        if (!confirmRes.ok) {
+          console.warn('Confirmation check failed, but tx may still succeed');
+        }
+
+        // Success!
+        updateProgress(100, 'Done!');
+        showSuccess(signature);
+
+      } catch (e) {
+        console.error('Mint error:', e);
+        alert(e.message || 'Minting failed');
+        setState('mint');
+      }
+    }
+
+    function updateProgress(percent, status) {
+      document.getElementById('mint-progress').style.width = `${percent}%`;
+      document.getElementById('mint-status').textContent = status;
+    }
+
+    function showSuccess(signature) {
+      setState('success');
+
+      const txHash = document.getElementById('tx-hash');
+      const txLink = document.getElementById('tx-link');
+      const viewExplorer = document.getElementById('btn-view-explorer');
+
+      txHash.textContent = `${signature.slice(0, 8)}...${signature.slice(-8)}`;
+      txLink.href = `https://explorer.solana.com/tx/${signature}`;
+      viewExplorer.href = `https://explorer.solana.com/tx/${signature}`;
+
+      // Random success artwork
+      const artworks = showcaseArtworks;
+      const randomArtwork = artworks[Math.floor(Math.random() * artworks.length)];
+      document.getElementById('clawd-success-iframe').src = randomArtwork;
+
+      // Confetti!
+      createConfetti();
+    }
+
+    function createConfetti() {
+      const container = document.getElementById('confetti-container');
+      const colors = ['#00d4aa', '#8b5cf6', '#ec4899', '#f7df1e', '#ffffff'];
+
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDelay = Math.random() * 2 + 's';
+        confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        container.appendChild(confetti);
+      }
+
+      setTimeout(() => container.innerHTML = '', 5000);
+    }
+
+    // Share functionality
+    function share() {
+      const text = "Just minted my Clawd from Claude Code Club! Proof I ship with Claude. @claudecodeclub";
+      const url = "https://x.com/i/communities/2008805891269931266";
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+    }
+
+    // Event listeners
+    document.getElementById('btn-connect-wallet')?.addEventListener('click', connectWallet);
+    document.getElementById('btn-disconnect')?.addEventListener('click', disconnectWallet);
+    document.getElementById('btn-mint')?.addEventListener('click', mint);
+    document.getElementById('btn-share')?.addEventListener('click', share);
+
+  </script>
+</body>
+</html>

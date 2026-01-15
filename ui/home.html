@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>user@claude-os: ~/home</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.css">
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/cascadia-code@5.0.3/index.css" rel="stylesheet">
+    <style>
+        :root {
+            --term-bg: #050505;
+            --term-text: #ffffff;
+            --term-dim: #333333;
+            --term-highlight: #ffffff;
+            --secondary: #cccccc;
+            --accent: #00d4aa;
+            --scanline: rgba(255, 255, 255, 0.1);
+            --glass: rgba(20, 20, 20, 0.9);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scrollbar-width: thin;
+            scrollbar-color: var(--term-dim) var(--term-bg);
+        }
+
+        body {
+            background-color: #000;
+            background-image:
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(20, 20, 20, 0.25) 50%),
+                linear-gradient(90deg, rgba(50, 50, 50, 0.03), rgba(50, 50, 50, 0.03), rgba(50, 50, 50, 0.03));
+            background-size: 100% 2px, 3px 100%;
+            color: var(--term-text);
+            font-family: "Cascadia Code", Consolas, monospace;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            font-size: 14px;
+        }
+
+        /* CRT Overlay Effect */
+        body::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: rgba(18, 18, 18, 0.1);
+            opacity: 0;
+            z-index: 2;
+            pointer-events: none;
+            animation: flicker 0.15s infinite;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.027906; }
+            5% { opacity: 0.048953; }
+            10% { opacity: 0.013483; }
+            15% { opacity: 0.052953; }
+            20% { opacity: 0.008953; }
+            25% { opacity: 0.078953; }
+            30% { opacity: 0.003483; }
+            35% { opacity: 0.054953; }
+            40% { opacity: 0.024953; }
+            45% { opacity: 0.034953; }
+            50% { opacity: 0.004953; }
+            55% { opacity: 0.038953; }
+            60% { opacity: 0.073483; }
+            65% { opacity: 0.040953; }
+            70% { opacity: 0.016953; }
+            75% { opacity: 0.064953; }
+            80% { opacity: 0.032953; }
+            85% { opacity: 0.002953; }
+            90% { opacity: 0.062953; }
+            95% { opacity: 0.024953; }
+            100% { opacity: 0.054953; }
+        }
+
+        .window {
+            width: 100%;
+            max-width: 1200px;
+            background: var(--term-bg);
+            border: 2px solid var(--term-dim);
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.05);
+            position: relative;
+            z-index: 1;
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* System Data Stream (Decorative) */
+        .sys-stream {
+            position: absolute;
+            top: -20px;
+            left: 0;
+            width: 100%;
+            color: #333;
+            font-size: 10px;
+            overflow: hidden;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .title-bar {
+            background: #111;
+            color: #fff;
+            padding: 5px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px solid var(--term-dim);
+        }
+
+        .title-controls span {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-left: 8px;
+            border: 1px solid #333;
+        }
+
+        .bg-red { background: #333; }
+        .bg-yellow { background: #777; }
+        .bg-green { background: #ccc; }
+
+        .terminal-body {
+            padding: 30px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .command-line {
+            margin-bottom: 40px;
+            border-bottom: 1px dashed var(--term-dim);
+            padding-bottom: 30px;
+        }
+
+        .prompt {
+            color: #888;
+            margin-right: 10px;
+        }
+
+        h1 {
+            color: var(--term-text);
+            font-size: 2.5rem;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+            margin-bottom: 10px;
+            font-weight: normal;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2em;
+            background: var(--term-text);
+            animation: blink 1s step-end infinite;
+            vertical-align: text-bottom;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Hero Section */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 50px;
+            align-items: center;
+        }
+
+        @media (max-width: 900px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hero-text h2 {
+            color: var(--accent);
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            font-weight: normal;
+        }
+
+        .hero-text p {
+            color: #888;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .hero-text .highlight {
+            color: var(--term-text);
+        }
+
+        /* Clawd Display */
+        .clawd-showcase {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .clawd-frame {
+            background: #000;
+            border: 2px solid var(--term-dim);
+            padding: 2px;
+            position: relative;
+        }
+
+        .clawd-frame:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(0, 212, 170, 0.2);
+        }
+
+        .clawd-frame-inner {
+            border: 1px solid var(--term-dim);
+            background: #000;
+        }
+
+        .clawd-art {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        #clawd-terminal {
+            width: 320px;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        /* Hide xterm scrollbar */
+        .xterm-viewport::-webkit-scrollbar { display: none; }
+        .xterm-viewport { scrollbar-width: none; overflow: hidden !important; }
+
+        .clawd-info {
+            padding: 10px 15px;
+            background: #111;
+            border-top: 1px solid var(--term-dim);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+        }
+
+        .clawd-name { color: var(--accent); }
+
+        .rarity-badge {
+            background: var(--accent);
+            color: #000;
+            padding: 3px 10px;
+            font-weight: bold;
+            font-size: 9px;
+            letter-spacing: 1px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+            border: 1px solid var(--term-dim);
+            padding: 20px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dashed var(--term-dim);
+            padding: 8px 0;
+        }
+
+        .stat-item:last-child { border-bottom: none; }
+
+        .stat-label {
+            color: #555;
+            text-transform: uppercase;
+            font-size: 11px;
+        }
+
+        .stat-value {
+            color: var(--term-highlight);
+            font-weight: bold;
+        }
+
+        /* Action Buttons */
+        .actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        button.sys-btn, a.sys-btn {
+            background: transparent;
+            border: 1px solid var(--term-dim);
+            color: var(--term-text);
+            padding: 12px 30px;
+            font-family: inherit;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        button.sys-btn:hover, a.sys-btn:hover {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+        }
+
+        button.sys-btn.primary, a.sys-btn.primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #000;
+        }
+
+        button.sys-btn.primary:hover, a.sys-btn.primary:hover {
+            background: #fff;
+            border-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 212, 170, 0.5);
+        }
+
+        /* Features Section */
+        .features {
+            margin-top: 50px;
+            border-top: 1px dashed var(--term-dim);
+            padding-top: 40px;
+        }
+
+        .features h3 {
+            color: var(--term-text);
+            margin-bottom: 30px;
+            font-weight: normal;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: rgba(10, 10, 10, 0.5);
+            border: 1px solid var(--term-dim);
+            padding: 25px;
+            transition: all 0.2s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .feature-icon {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h4 {
+            color: var(--term-text);
+            margin-bottom: 10px;
+            font-weight: normal;
+            font-size: 14px;
+        }
+
+        .feature-card p {
+            color: #666;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 50px;
+            border-top: 1px solid #333;
+            padding-top: 15px;
+            color: #444;
+            font-size: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Upload Progress */
+        .upload-progress {
+            background: rgba(0, 212, 170, 0.05);
+            border: 1px solid var(--accent);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .progress-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .progress-item {
+            display: grid;
+            grid-template-columns: 100px 1fr 70px;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .progress-label {
+            color: #888;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+
+        .progress-bar-container {
+            height: 8px;
+            background: #111;
+            border: 1px solid #333;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--accent);
+            transition: width 0.5s ease;
+        }
+
+        .progress-bar.complete {
+            background: #22c55e;
+        }
+
+        .progress-value {
+            color: var(--term-text);
+            font-size: 12px;
+            text-align: right;
+            font-family: monospace;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; }
+        ::-webkit-scrollbar-thumb:hover { background: #666; }
+    </style>
+</head>
+
+<body>
+    <div class="window">
+        <div class="sys-stream">
+            SYS.MEM: OK | NET: ON | CRYPTO: ACTIVE | NODES: 24 | HASH: 0x9f8a...
+        </div>
+
+        <div class="title-bar">
+            <div>user@CLAUDE-OS: ~/CCC/HOME</div>
+            <div class="title-controls">
+                <span class="bg-green"></span>
+                <span class="bg-yellow"></span>
+                <span class="bg-red"></span>
+            </div>
+        </div>
+
+        <div class="terminal-body">
+            <div class="command-line">
+                <div style="margin-bottom: 10px;">
+                    <span class="prompt">></span> <span style="color: var(--secondary)">init clawd_protocol</span>
+                </div>
+                <h1>CLAUDE_CODE_CLUB<span class="cursor">_</span></h1>
+                <p style="color: #666;">v1.0.0 [DEVNET] // GENERATIVE NFT PROTOCOL</p>
+            </div>
+
+            <!-- Hero Section -->
+            <div class="hero">
+                <div class="hero-text">
+                    <h2>> ABOUT_CLAWD.exe</h2>
+                    <p>
+                        <span class="highlight">CLAWD</span> is the official mascot of the Claude Code Club.
+                        Each NFT is <span class="highlight">dynamically generated</span> based on your
+                        GitHub contribution metrics.
+                    </p>
+                    <p>
+                        Your commits, stars, and contributions determine your Clawd's
+                        <span class="highlight">traits</span>, <span class="highlight">rarity</span>,
+                        and <span class="highlight">accessories</span>.
+                    </p>
+                    <p style="color: #555; font-size: 12px; margin-top: 20px;">
+                        > More contributions = Rarer traits<br>
+                        > Unique 1/1 combinations available<br>
+                        > On-chain trait verification
+                    </p>
+
+                    <div class="actions">
+                        <a href="gallery.html" class="sys-btn primary">[ VIEW_GALLERY ]</a>
+                        <a href="verify.html" class="sys-btn">[ VERIFY_WALLET ]</a>
+                        <button class="sys-btn" onclick="randomizeClawd()">[ RANDOMIZE ]</button>
+                    </div>
+                </div>
+
+                <div class="clawd-showcase">
+                    <div class="clawd-frame">
+                        <div class="clawd-frame-inner">
+                            <div class="clawd-art">
+                                <div id="clawd-terminal"></div>
+                            </div>
+                            <div class="clawd-info">
+                                <span class="clawd-name" id="clawd-name">CLAWD #0000</span>
+                                <span class="rarity-badge" id="rarity-badge">LEGENDARY</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- IPFS Upload Progress -->
+            <div class="upload-progress" id="upload-progress" style="display: none;">
+                <h3 style="color: var(--accent); margin-bottom: 15px;">> IPFS_UPLOAD_STATUS</h3>
+                <div class="progress-grid">
+                    <div class="progress-item">
+                        <span class="progress-label">HTML_FILES</span>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="html-progress" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-value" id="html-count">0/777</span>
+                    </div>
+                    <div class="progress-item">
+                        <span class="progress-label">PNG_FILES</span>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="png-progress" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-value" id="png-count">0/777</span>
+                    </div>
+                    <div class="progress-item">
+                        <span class="progress-label">METADATA</span>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="metadata-progress" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-value" id="metadata-count">0/777</span>
+                    </div>
+                </div>
+                <div class="progress-status" id="progress-status" style="margin-top: 10px; color: #666; font-size: 11px;">
+                    Checking progress...
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-label">TOTAL_SUPPLY</span>
+                    <span class="stat-value">777</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">UNIQUE_TRAITS</span>
+                    <span class="stat-value">50+</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">1/1_SPECIALS</span>
+                    <span class="stat-value">10</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">NETWORK</span>
+                    <span class="stat-value">SOLANA</span>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="features">
+                <h3>> FEATURES.md</h3>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">*</div>
+                        <h4>DYNAMIC_GENERATION</h4>
+                        <p>Your GitHub metrics determine your Clawd's appearance. More contributions unlock rarer traits and accessories.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">♛</div>
+                        <h4>RARITY_TIERS</h4>
+                        <p>Five rarity tiers: Common, Uncommon, Rare, Epic, and Legendary. Each with unique visual traits.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚔</div>
+                        <h4>ON_CHAIN_TRAITS</h4>
+                        <p>All traits are stored on-chain and verified. Your Clawd's attributes are permanent and immutable.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">◆</div>
+                        <h4>ANIMATED_ART</h4>
+                        <p>Each NFT includes static and animated versions. Terminal-style ASCII art with smooth animations.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <span>CCC_TERMINAL_UI // v1.0.0</span>
+                <span>DEVNET_ACTIVE</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.min.js"></script>
+    <script>
+        // ===========================================
+        // CLAWD RENDERER (from artwork-generator.js)
+        // ===========================================
+
+        const COLOR_PALETTE = {
+            purple: '#8b5cf6',
+            pink: '#ec4899',
+            green: '#22c55e',
+            white: '#ffffff',
+            orange: '#f97316',
+            blue: '#3b82f6',
+            red: '#ef4444',
+            silver: '#b0b0c0',
+            gold: '#eab308',
+            diamond: '#00d4aa',
+        };
+
+        const HAT_ASCII = {
+            none: [],
+            tophat: ['           █▀▀▀█', '          ▀▀▀▀▀▀▀'],
+            crown: ['            ♛'],
+            wizardhat: ['             ∧', '            /✦\\', '           /✦ ✦\\'],
+            cap: ['           ┌──╮', '           └──┘───'],
+            devil: ['           ▲   ▲'],
+            halo: ['             ○'],
+            antenna: ['             ⚆', '             │'],
+            headphones: ['          ╭─────╮', '          ◖     ◗'],
+            cowboy: ['          ╭─────╮', '         ═╧═════╧═'],
+        };
+
+        const STAR_CHARS = {
+            bright: '*',
+            swords: '⚔',
+            music: '♪',
+            none: ' ',
+            unholy: '⸸',
+            goth: '☠',
+            bitcoin: '₿',
+            diamonds: '◆',
+        };
+
+        const HAND_CHARS = {
+            none: '',
+            peace: '✌︎',
+            pen: '✎',
+            microphone: '🎙',
+            coffee: '☕︎',
+            phone: '🖥',
+            rolex: '⏱',
+        };
+
+        const SHOE_CHARS = {
+            none: '▘▘ ▝▝',
+            slides: '═▘ ▝═',
+            crocs: '⊏▘ ▝⊐',
+            heels: '▘▚ ▞▝',
+            jordans: '▄█ █▄',
+        };
+
+        const RARITY_TIERS = ['COMMON', 'UNCOMMON', 'RARE', 'EPIC', 'LEGENDARY'];
+
+        // Sample Clawds to rotate through
+        const SAMPLE_CLAWDS = [
+            {
+                bodyColor: 'diamond', starStyle: 'diamonds', starColor: 'diamond',
+                hat: 'crown', hatColor: 'gold', hand: 'rolex', handColor: 'diamond',
+                shoes: 'jordans', shoeColor: 'diamond', rarity: 'LEGENDARY', id: '9164'
+            },
+            {
+                bodyColor: 'gold', starStyle: 'bitcoin', starColor: 'gold',
+                hat: 'tophat', hatColor: 'gold', hand: 'coffee', handColor: 'gold',
+                shoes: 'jordans', shoeColor: 'gold', rarity: 'EPIC', id: '4421'
+            },
+            {
+                bodyColor: 'purple', starStyle: 'swords', starColor: 'red',
+                hat: 'devil', hatColor: 'red', hand: 'none', handColor: 'purple',
+                shoes: 'heels', shoeColor: 'red', rarity: 'RARE', id: '7832'
+            },
+            {
+                bodyColor: 'blue', starStyle: 'music', starColor: 'blue',
+                hat: 'wizardhat', hatColor: 'purple', hand: 'pen', handColor: 'blue',
+                shoes: 'crocs', shoeColor: 'blue', rarity: 'UNCOMMON', id: '2156'
+            },
+            {
+                bodyColor: 'pink', starStyle: 'bright', starColor: 'white',
+                hat: 'cap', hatColor: 'white', hand: 'peace', handColor: 'pink',
+                shoes: 'slides', shoeColor: 'pink', rarity: 'COMMON', id: '0042'
+            },
+        ];
+
+        let currentClawdIndex = 0;
+        let term = null;
+
+        function hexToRgb(hex) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return { r, g, b };
+        }
+
+        function getColor(name) {
+            return COLOR_PALETTE[name] || name;
+        }
+
+        function renderClawd(traits) {
+            if (!term) {
+                term = new Terminal({
+                    cols: 32,
+                    rows: 7,
+                    theme: {
+                        background: '#000000',
+                        foreground: '#ffffff',
+                        cursor: '#000000'
+                    },
+                    fontFamily: '"Cascadia Code", Consolas, monospace',
+                    fontSize: 24,
+                    lineHeight: 1.0,
+                    cursorBlink: false
+                });
+                term.open(document.getElementById('clawd-terminal'));
+            }
+
+            term.clear();
+
+            // Get colors
+            const bodyColor = getColor(traits.bodyColor);
+            const starStyle = traits.starStyle || 'bright';
+            const starColor = starStyle === 'bitcoin' ? '#ffd700' :
+                              starStyle === 'diamonds' ? '#00d4aa' :
+                              getColor(traits.starColor);
+            const hat = traits.hat || 'none';
+            const hatColor = hat === 'devil' ? '#cc0000' : getColor(traits.hatColor);
+            const shoeColor = getColor(traits.shoeColor);
+            const handColor = getColor(traits.handColor);
+
+            // ANSI helper
+            function ansi(hex) {
+                const { r, g, b } = hexToRgb(hex);
+                return `\x1b[38;2;${r};${g};${b}m`;
+            }
+            const reset = '\x1b[0m';
+
+            const bodyAnsi = ansi(bodyColor);
+            const starAnsi = ansi(starColor);
+            const hatAnsi = ansi(hatColor);
+            const shoeAnsi = ansi(shoeColor);
+            const handAnsi = ansi(handColor);
+
+            const starChar = STAR_CHARS[starStyle] || '*';
+            const handChar = HAND_CHARS[traits.hand] || '';
+            const feetChars = SHOE_CHARS[traits.shoes] || SHOE_CHARS.none;
+            const hatLines = HAT_ASCII[hat] || [];
+
+            // Calculate padding for hat
+            const maxHatHeight = 3;
+            const hatHeight = hatLines.length;
+            const paddingNeeded = maxHatHeight - hatHeight;
+
+            // Empty line
+            term.writeln('');
+
+            // Padding before hat
+            for (let i = 0; i < paddingNeeded; i++) {
+                term.writeln('');
+            }
+
+            // Hat lines
+            hatLines.forEach(line => {
+                term.writeln(hatAnsi + line + reset);
+            });
+
+            // Body line 1
+            term.writeln('        ' + starAnsi + starChar + reset + ' ' + bodyAnsi + '\u2590\u259B\u2588\u2588\u2588\u259C\u258C' + reset + ' ' + starAnsi + starChar + reset);
+
+            // Body line 2 (with hand)
+            const rightChar = handChar ? (handAnsi + handChar) : (starAnsi + starChar);
+            term.writeln('       ' + starAnsi + starChar + reset + ' ' + bodyAnsi + '\u259D\u259C\u2588\u2588\u2588\u2588\u2588\u259B\u2598' + reset + ' ' + rightChar + reset);
+
+            // Body line 3 (feet)
+            term.writeln('        ' + starAnsi + starChar + reset + '  ' + shoeAnsi + feetChars + reset + '  ' + starAnsi + starChar + reset);
+
+            // Update info
+            document.getElementById('clawd-name').textContent = `CLAWD #${traits.id}`;
+            document.getElementById('rarity-badge').textContent = traits.rarity;
+        }
+
+        function randomizeClawd() {
+            currentClawdIndex = (currentClawdIndex + 1) % SAMPLE_CLAWDS.length;
+            renderClawd(SAMPLE_CLAWDS[currentClawdIndex]);
+        }
+
+        // Auto-rotate every 5 seconds
+        setInterval(randomizeClawd, 5000);
+
+        // Initial render
+        window.addEventListener('load', () => {
+            renderClawd(SAMPLE_CLAWDS[0]);
+            checkUploadProgress();
+        });
+
+        // ===========================================
+        // UPLOAD PROGRESS TRACKER
+        // ===========================================
+
+        async function checkUploadProgress() {
+            try {
+                const res = await fetch('/api/upload/progress');
+                const data = await res.json();
+
+                const progressDiv = document.getElementById('upload-progress');
+
+                // Only show if not complete
+                if (!data.complete) {
+                    progressDiv.style.display = 'block';
+
+                    // Update HTML progress
+                    const htmlPct = (data.html.count / data.html.total) * 100;
+                    document.getElementById('html-progress').style.width = htmlPct + '%';
+                    document.getElementById('html-count').textContent = `${data.html.count}/${data.html.total}`;
+                    if (data.html.count === data.html.total) {
+                        document.getElementById('html-progress').classList.add('complete');
+                    }
+
+                    // Update PNG progress
+                    const pngPct = (data.png.count / data.png.total) * 100;
+                    document.getElementById('png-progress').style.width = pngPct + '%';
+                    document.getElementById('png-count').textContent = `${data.png.count}/${data.png.total}`;
+                    if (data.png.count === data.png.total) {
+                        document.getElementById('png-progress').classList.add('complete');
+                    }
+
+                    // Update Metadata progress
+                    const metaPct = (data.metadata.count / data.metadata.total) * 100;
+                    document.getElementById('metadata-progress').style.width = metaPct + '%';
+                    document.getElementById('metadata-count').textContent = `${data.metadata.count}/${data.metadata.total}`;
+                    if (data.metadata.count === data.metadata.total) {
+                        document.getElementById('metadata-progress').classList.add('complete');
+                    }
+
+                    // Calculate ETA
+                    const totalDone = data.html.count + data.png.count + data.metadata.count;
+                    const totalNeeded = 777 * 3;
+                    const remaining = totalNeeded - totalDone;
+                    const etaMinutes = Math.ceil(remaining / 7); // ~7 files/min
+
+                    let status = `Uploading to IPFS... ${totalDone}/${totalNeeded} files`;
+                    if (remaining > 0 && data.metadata.count < 777) {
+                        status += ` (~${etaMinutes} min remaining)`;
+                    }
+                    document.getElementById('progress-status').textContent = status;
+
+                    // Refresh every 10 seconds
+                    setTimeout(checkUploadProgress, 10000);
+                } else {
+                    progressDiv.style.display = 'none';
+                }
+
+            } catch (err) {
+                // Server not running or error - hide progress
+                document.getElementById('upload-progress').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+
+</html>

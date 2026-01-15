@@ -1,0 +1,38 @@
+# Environment & Secrets
+.env
+.env.*
+.env.local
+.env.production
+
+# Claude local settings (contains API keys)
+.claude/settings.local.json
+
+# Solana keypairs
+target/
+*-keypair.json
+*.pem
+*.key
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+
+# Build artifacts
+dist/
+build/
+*.so
+nul

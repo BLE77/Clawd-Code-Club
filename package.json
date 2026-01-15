@@ -1,0 +1,63 @@
+{
+  "name": "claude-code-club",
+  "version": "1.0.0",
+  "description": "Claude Code Club NFT minting app",
+  "type": "module",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "preview": "node server/index.js",
+    "init-program": "npx ts-node --esm scripts/initialize-program.ts",
+    "test-mint": "npx ts-node --esm scripts/test-mint-flow.ts",
+    "check-state": "npx ts-node --esm scripts/check-program-state.ts",
+    "verify-user": "npx ts-node --esm scripts/verify-user.ts",
+    "mint": "npx tsx scripts/mint-nft-pinata.ts",
+    "mint:common": "npx tsx scripts/mint-nft-pinata.ts common",
+    "mint:uncommon": "npx tsx scripts/mint-nft-pinata.ts uncommon",
+    "mint:rare": "npx tsx scripts/mint-nft-pinata.ts rare",
+    "mint:epic": "npx tsx scripts/mint-nft-pinata.ts epic",
+    "mint:legendary": "npx tsx scripts/mint-nft-pinata.ts legendary",
+    "generate-collection": "npx tsx scripts/generate-collection.ts",
+    "generate-local": "npx tsx scripts/generate-local.ts",
+    "deploy-cm": "npx tsx scripts/deploy-candy-machine.ts",
+    "resume-cm": "npx tsx scripts/resume-candy-machine.ts"
+  },
+  "dependencies": {
+    "@metaplex-foundation/mpl-candy-machine": "^6.1.0",
+    "@metaplex-foundation/mpl-token-metadata": "^3.2.1",
+    "@metaplex-foundation/mpl-toolbox": "^0.10.0",
+    "@metaplex-foundation/umi": "^1.4.1",
+    "@metaplex-foundation/umi-bundle-defaults": "^1.4.1",
+    "@metaplex-foundation/umi-uploader-irys": "^1.4.2",
+    "@pinata/sdk": "^2.1.0",
+    "@solana/spl-token": "^0.4.0",
+    "@solana/web3.js": "^1.87.6",
+    "@storacha/client": "^1.8.26",
+    "@web3-storage/w3up-client": "^17.3.0",
+    "bn.js": "^5.2.1",
+    "borsh": "^2.0.0",
+    "bs58": "^5.0.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "nft.storage": "^7.2.0",
+    "open": "^10.0.3",
+    "pinata-web3": "^0.5.4",
+    "playwright": "^1.57.0",
+    "sharp": "^0.34.5"
+  },
+  "devDependencies": {
+    "@types/bn.js": "^5.1.5",
+    "@types/node": "^20.10.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.2"
+  },
+  "keywords": [
+    "nft",
+    "solana",
+    "github",
+    "claude-code-club"
+  ],
+  "author": "",
+  "license": "MIT"
+}
