@@ -92,32 +92,10 @@ This will:
 
 ---
 
-## Traits & Rarity
-
-Each Clawd has unique traits:
-
-- **Body Color**: Purple, Pink, Green, White, Orange, Blue, Red, Silver, Gold, Diamond
-- **Hat**: None, Cap, Tophat, Wizard, Devil, Halo, Crown, and more
-- **Hand Accessory**: None, Peace, Pen, Microphone, Coffee, Phone, Rolex
-- **Shoes**: None, Slides, Crocs, Heels, Dress, Jordans
-- **Star Style**: Bright, Swords, Music, Unholy, Bitcoin, Diamonds
-
-### Rarity Tiers
-
-| Score | Tier |
-|-------|------|
-| 0-5 | Common |
-| 6-11 | Uncommon |
-| 12-19 | Rare |
-| 20-29 | Epic |
-| 30+ | Legendary |
-
----
-
 ## Requirements
 
 - **Solana Wallet**: Phantom or Solflare
-- **SOL Balance**: At least 0.11 SOL (0.1 mint + fees)
+- **SOL Balance**: Small amount for transaction fees
 - **Node.js**: v18 or higher
 
 ---
