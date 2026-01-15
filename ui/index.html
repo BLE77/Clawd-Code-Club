@@ -483,11 +483,6 @@
       txLink.href = `https://explorer.solana.com/tx/${signature}`;
       viewExplorer.href = `https://explorer.solana.com/tx/${signature}`;
 
-      // Random success artwork
-      const artworks = showcaseArtworks;
-      const randomArtwork = artworks[Math.floor(Math.random() * artworks.length)];
-      document.getElementById('clawd-success-iframe').src = randomArtwork;
-
       // Confetti!
       createConfetti();
     }
