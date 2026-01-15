@@ -30,7 +30,7 @@
 
 ## What is Clawd Code Club?
 
-Clawd Code Club (CCC) is an exclusive NFT collection for developers who build with Claude Code. Each **Clawd** is a unique ASCII-art character living on the Solana blockchain.
+Clawd Code Club (CCC) is an exclusive digital collectible collection for developers who build with Claude Code. Each **Clawd** is a unique ASCII-art character living on the Solana blockchain.
 
 ## Quick Start
 
@@ -56,7 +56,7 @@ This will:
 1. Start a local minting server
 2. Open your browser automatically
 3. Connect your Solana wallet (Phantom/Solflare)
-4. Mint your unique Clawd for 0.1 SOL
+4. Mint your unique Clawd
 
 ---
 
@@ -79,7 +79,7 @@ This will:
 1. Server builds the transaction
 2. YOUR wallet signs it locally (never leaves your device)
 3. Server sends signed transaction to Solana
-4. You receive your Clawd NFT
+4. You receive your Clawd in your wallet
 
 ---
 
@@ -88,7 +88,6 @@ This will:
 | Property | Value |
 |----------|-------|
 | **Supply** | 777 unique Clawds |
-| **Mint Price** | 0.1 SOL |
 | **Network** | Solana Mainnet |
 | **Candy Machine** | `bBRSLLFmvyYhquSpAgSS1dbePvyZniHtMT5Ki1ba8Xr` |
 | **Collection** | `AkcKbQ5gXkg6Kz7ESWKAJb2i8J7ZKHxDRBZ7JqQ9vTGE` |
