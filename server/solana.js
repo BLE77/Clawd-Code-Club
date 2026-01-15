@@ -60,7 +60,7 @@ export const RPC_ENDPOINT =
 /**
  * Network name for display purposes
  */
-export const NETWORK = process.env.SOLANA_NETWORK || 'devnet';
+export const NETWORK = process.env.SOLANA_NETWORK || 'mainnet-beta';
 
 // ═══════════════════════════════════════════════════════════════════════════
 // CONNECTION

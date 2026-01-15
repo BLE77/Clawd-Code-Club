@@ -328,7 +328,7 @@ app.get('/api/health', (req, res) => {
     timestamp: new Date().toISOString(),
     config: {
       githubConfigured: !!GITHUB_CLIENT_ID,
-      solanaRpcUrl: process.env.SOLANA_RPC_URL || 'https://api.devnet.solana.com'
+      solanaRpcUrl: process.env.SOLANA_RPC_URL || 'https://api.mainnet-beta.solana.com'
     }
   });
 });
