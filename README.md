@@ -44,6 +44,18 @@ This will:
 
 ---
 
+## Traits
+
+Each Clawd is generated with a unique combination of traits:
+
+- **Body Colors**: Purple, Pink, Green, White, Orange, Blue, Red, Silver, Gold, Diamond
+- **Stars**: Bright, Swords, Music, None, Unholy, Goth, Bitcoin, Diamonds
+- **Hats**: None, Cap, Tophat, Wizardhat, Devil, Antenna, Headphones, Cowboy, Flowercrown, Beanie, Halo, Hoodie, Crown
+- **Hands**: None, Peace, Pen, Microphone, Coffee, Phone, Rolex
+- **Shoes**: None, Slides, Crocs, Heels, Dress, Jordans
+
+---
+
 ## Safety & Security
 
 ```
@@ -79,7 +91,6 @@ No API keys required
 ## Requirements
 
 - **Solana Wallet**: Phantom or Solflare
-- **SOL Balance**: Small amount for transaction fees
 - **Node.js**: v18 or higher
 
 ---
