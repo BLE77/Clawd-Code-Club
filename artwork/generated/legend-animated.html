@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=512, height=512">
+  <title>Clawd #1277</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 512px;
+      height: 512px;
+      overflow: hidden;
+    }
+
+    body {
+      background: #0a0a0f;
+      font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+    }
+
+    .terminal {
+      width: 512px;
+      height: 512px;
+      background: #0a0a0f;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .terminal-header {
+      height: 32px;
+      background: #1a1a25;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      gap: 8px;
+      border-bottom: 1px solid #2a2a3a;
+    }
+
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot.red { background: #ff5f56; }
+    .dot.yellow { background: #ffbd2e; }
+    .dot.green { background: #27ca40; }
+
+    .terminal-title {
+      color: #606070;
+      font-size: 12px;
+      margin-left: 8px;
+    }
+
+    .terminal-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    /* Animated scanlines */
+    .terminal-body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.1) 0px,
+        rgba(0, 0, 0, 0.1) 1px,
+        transparent 1px,
+        transparent 2px
+      );
+      pointer-events: none;
+      animation: scanline 8s linear infinite;
+    }
+
+    @keyframes scanline {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(4px); }
+    }
+
+    .clawd-container {
+      text-align: center;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .clawd-art {
+      font-size: 48px;
+      line-height: 1.05;
+      text-shadow: 0 0 30px #00d4aa60;
+    }
+
+    .body { color: #00d4aa; }
+    .stars { color: #00d4aa; animation: twinkle 2s ease-in-out infinite; }
+    .hat { color: #eab308; font-size: 40px; }
+    .shoes { color: #00d4aa; font-size: 36px; }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    .star-1 { animation-delay: 0s; }
+    .star-2 { animation-delay: 0.3s; }
+    .star-3 { animation-delay: 0.6s; }
+    .star-4 { animation-delay: 0.9s; }
+    .star-5 { animation-delay: 1.2s; }
+    .star-6 { animation-delay: 1.5s; }
+
+    .terminal-prompt {
+      margin-top: 30px;
+      width: 280px;
+    }
+
+    .terminal-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #2a3a4a, #3a4a5a, #2a3a4a, transparent);
+    }
+
+    .prompt-row {
+      display: flex;
+      align-items: center;
+      padding: 10px 0;
+      font-size: 16px;
+    }
+
+    .prompt-arrow {
+      color: #4a5a6a;
+      margin-right: 8px;
+    }
+
+    .cursor {
+      width: 9px;
+      height: 16px;
+      background: #ffffff;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .info-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 40px;
+      background: #1a1a25;
+      border-top: 1px solid #2a2a3a;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      font-size: 12px;
+    }
+
+    .nft-name { color: #00d4aa; }
+    .nft-rarity {
+      color: #0a0a0f;
+      background: linear-gradient(90deg, #00d4aa, #00d4aacc);
+      padding: 4px 12px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
+
+    /* Glow effect behind Clawd */
+    .glow {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, #00d4aa30 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+      50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
+    }
+  </style>
+</head>
+<body>
+  <div class="terminal">
+    <div class="terminal-header">
+      <div class="dot red"></div>
+      <div class="dot yellow"></div>
+      <div class="dot green"></div>
+      <span class="terminal-title">clawd_#1277.exe</span>
+    </div>
+
+    <div class="terminal-body">
+      <div class="glow"></div>
+
+      <div class="clawd-container">
+        <div class="clawd-art">
+          <div class="hat">♛</div>
+          <div>
+            <span class="stars star-1">◆</span>
+            <span class="body">▐▛███▜▌</span>
+            <span class="stars star-2">◆</span>
+          </div>
+          <div>
+            <span class="stars star-3">◆</span>
+            <span class="body">▝▜█████▛▘</span>
+            <span class="stars star-4">◆</span>
+          </div>
+          <div>
+            <span class="stars star-5">◆</span>
+            <span class="shoes">▄█ █▄</span>
+            <span class="stars star-6">◆</span>
+          </div>
+
+          <div class="terminal-prompt">
+            <div class="terminal-line"></div>
+            <div class="prompt-row">
+              <span class="prompt-arrow">></span>
+              <div class="cursor"></div>
+            </div>
+            <div class="terminal-line"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-bar">
+      <span class="nft-name">CLAWD #1277</span>
+      <span class="nft-rarity">LEGENDARY</span>
+    </div>
+  </div>
+</body>
+</html>

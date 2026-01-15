@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clawd Rendering Test - Multiple Approaches</title>
+  <link href="https://cdn.jsdelivr.net/npm/@fontsource/cascadia-code@5.0.3/index.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0a0a0f;
+      color: #fff;
+      font-family: system-ui, sans-serif;
+      padding: 40px;
+    }
+    h1 { color: #00d4aa; margin-bottom: 10px; text-align: center; }
+    .subtitle { color: #606070; margin-bottom: 40px; text-align: center; }
+
+    .tests {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .test-card {
+      background: #12121a;
+      border: 1px solid #2a2a3a;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .test-card h3 {
+      color: #00d4aa;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .test-card .desc {
+      color: #606070;
+      font-size: 11px;
+      margin-bottom: 15px;
+    }
+
+    .test-card .preview {
+      background: #000;
+      border-radius: 8px;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 200px;
+    }
+
+    /* APPROACH 1: Basic Pre with Cascadia Code */
+    .approach-1 {
+      font-family: "Cascadia Code", monospace;
+      font-size: 32px;
+      line-height: 1.1;
+      white-space: pre;
+      color: #00d4aa;
+      text-shadow: 0 0 20px #00d4aa40;
+    }
+
+    /* APPROACH 2: Larger font size */
+    .approach-2 {
+      font-family: "Cascadia Code", monospace;
+      font-size: 48px;
+      line-height: 1.0;
+      white-space: pre;
+      color: #00d4aa;
+      text-shadow: 0 0 20px #00d4aa40;
+    }
+
+    /* APPROACH 3: Fira Code font */
+    .approach-3 {
+      font-family: "Fira Code", monospace;
+      font-size: 32px;
+      line-height: 1.1;
+      white-space: pre;
+      color: #00d4aa;
+      text-shadow: 0 0 20px #00d4aa40;
+    }
+
+    /* APPROACH 4: JetBrains Mono */
+    .approach-4 {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 32px;
+      line-height: 1.1;
+      white-space: pre;
+      color: #00d4aa;
+      text-shadow: 0 0 20px #00d4aa40;
+    }
+
+    /* APPROACH 5: System monospace */
+    .approach-5 {
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 32px;
+      line-height: 1.1;
+      white-space: pre;
+      color: #00d4aa;
+      text-shadow: 0 0 20px #00d4aa40;
+    }
+
+    /* APPROACH 6: DejaVu Sans Mono (great Unicode support) */
+    .approach-6 {
+      font-family: "DejaVu Sans Mono", monospace;
+      font-size: 32px;
+      line-height: 1.1;
+      white-space: pre;
+      color: #00d4aa;
+      text-shadow: 0 0 20px #00d4aa40;
+    }
+
+    /* APPROACH 7: Character-by-character with fixed width spans */
+    .approach-7 {
+      font-family: "Cascadia Code", monospace;
+      font-size: 32px;
+      line-height: 1.1;
+      color: #00d4aa;
+      text-shadow: 0 0 20px #00d4aa40;
+    }
+    .approach-7 .char {
+      display: inline-block;
+      width: 0.6em;
+      text-align: center;
+    }
+
+    /* APPROACH 8: Using letter-spacing */
+    .approach-8 {
+      font-family: "Cascadia Code", monospace;
+      font-size: 32px;
+      line-height: 1.1;
+      white-space: pre;
+      color: #00d4aa;
+      text-shadow: 0 0 20px #00d4aa40;
+      letter-spacing: 0.05em;
+    }
+
+    /* APPROACH 9: Canvas-based rendering */
+    .approach-9 canvas {
+      image-rendering: pixelated;
+    }
+
+    /* APPROACH 10: SVG text */
+    .approach-10 svg {
+      max-width: 100%;
+    }
+    .approach-10 text {
+      font-family: "Cascadia Code", monospace;
+      fill: #00d4aa;
+    }
+
+    /* APPROACH 11: Simplified ASCII art (no block chars) */
+    .approach-11 {
+      font-family: "Cascadia Code", monospace;
+      font-size: 28px;
+      line-height: 1.2;
+      white-space: pre;
+      color: #00d4aa;
+      text-shadow: 0 0 20px #00d4aa40;
+    }
+
+    /* APPROACH 12: xterm.js (like preview.html) */
+    .approach-12 {
+      width: 300px;
+      height: 120px;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.css">
+</head>
+<body>
+  <h1>Clawd Body Rendering Test</h1>
+  <p class="subtitle">Testing different approaches to render Unicode block characters correctly</p>
+
+  <div class="tests">
+
+    <!-- Approach 1: Basic Cascadia Code -->
+    <div class="test-card">
+      <h3>1. Cascadia Code (32px)</h3>
+      <p class="desc">Current approach - basic pre tag</p>
+      <div class="preview">
+        <pre class="approach-1">* &#x2590;&#x259B;&#x2588;&#x2588;&#x2588;&#x259C;&#x258C; *
+* &#x259D;&#x259C;&#x2588;&#x2588;&#x2588;&#x2588;&#x2588;&#x259B;&#x2598; *
+*  &#x2584;&#x2588; &#x2588;&#x2584;  *</pre>
+      </div>
+    </div>
+
+    <!-- Approach 2: Larger font -->
+    <div class="test-card">
+      <h3>2. Cascadia Code (48px)</h3>
+      <p class="desc">Larger font may render better</p>
+      <div class="preview">
+        <pre class="approach-2">* &#x2590;&#x259B;&#x2588;&#x2588;&#x2588;&#x259C;&#x258C; *
+* &#x259D;&#x259C;&#x2588;&#x2588;&#x2588;&#x2588;&#x2588;&#x259B;&#x2598; *
+*  &#x2584;&#x2588; &#x2588;&#x2584;  *</pre>
+      </div>
+    </div>
+
+    <!-- Approach 3: Fira Code -->
+    <div class="test-card">
+      <h3>3. Fira Code</h3>
+      <p class="desc">Popular programming font</p>
+      <div class="preview">
+        <pre class="approach-3">* &#x2590;&#x259B;&#x2588;&#x2588;&#x2588;&#x259C;&#x258C; *
+* &#x259D;&#x259C;&#x2588;&#x2588;&#x2588;&#x2588;&#x2588;&#x259B;&#x2598; *
+*  &#x2584;&#x2588; &#x2588;&#x2584;  *</pre>
+      </div>
+    </div>
+
+    <!-- Approach 4: JetBrains Mono -->
+    <div class="test-card">
+      <h3>4. JetBrains Mono</h3>
+      <p class="desc">Another popular programming font</p>
+      <div class="preview">
+        <pre class="approach-4">* &#x2590;&#x259B;&#x2588;&#x2588;&#x2588;&#x259C;&#x258C; *
+* &#x259D;&#x259C;&#x2588;&#x2588;&#x2588;&#x2588;&#x2588;&#x259B;&#x2598; *
+*  &#x2584;&#x2588; &#x2588;&#x2584;  *</pre>
+      </div>
+    </div>
+
+    <!-- Approach 5: System Consolas -->
+    <div class="test-card">
+      <h3>5. Consolas (System)</h3>
+      <p class="desc">Windows system monospace font</p>
+      <div class="preview">
+        <pre class="approach-5">* &#x2590;&#x259B;&#x2588;&#x2588;&#x2588;&#x259C;&#x258C; *
+* &#x259D;&#x259C;&#x2588;&#x2588;&#x2588;&#x2588;&#x2588;&#x259B;&#x2598; *
+*  &#x2584;&#x2588; &#x2588;&#x2584;  *</pre>
+      </div>
+    </div>
+
+    <!-- Approach 6: DejaVu Sans Mono -->
+    <div class="test-card">
+      <h3>6. DejaVu Sans Mono</h3>
+      <p class="desc">Known for excellent Unicode support</p>
+      <div class="preview">
+        <pre class="approach-6">* &#x2590;&#x259B;&#x2588;&#x2588;&#x2588;&#x259C;&#x258C; *
+* &#x259D;&#x259C;&#x2588;&#x2588;&#x2588;&#x2588;&#x2588;&#x259B;&#x2598; *
+*  &#x2584;&#x2588; &#x2588;&#x2584;  *</pre>
+      </div>
+    </div>
+
+    <!-- Approach 7: Fixed-width spans -->
+    <div class="test-card">
+      <h3>7. Fixed-Width Spans</h3>
+      <p class="desc">Each char in fixed-width container</p>
+      <div class="preview">
+        <div class="approach-7">
+          <div><span class="char">*</span><span class="char"> </span><span class="char">&#x2590;</span><span class="char">&#x259B;</span><span class="char">&#x2588;</span><span class="char">&#x2588;</span><span class="char">&#x2588;</span><span class="char">&#x259C;</span><span class="char">&#x258C;</span><span class="char"> </span><span class="char">*</span></div>
+          <div><span class="char">*</span><span class="char"> </span><span class="char">&#x259D;</span><span class="char">&#x259C;</span><span class="char">&#x2588;</span><span class="char">&#x2588;</span><span class="char">&#x2588;</span><span class="char">&#x2588;</span><span class="char">&#x2588;</span><span class="char">&#x259B;</span><span class="char">&#x2598;</span><span class="char"> </span><span class="char">*</span></div>
+          <div><span class="char">*</span><span class="char"> </span><span class="char"> </span><span class="char">&#x2584;</span><span class="char">&#x2588;</span><span class="char"> </span><span class="char">&#x2588;</span><span class="char">&#x2584;</span><span class="char"> </span><span class="char"> </span><span class="char">*</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Approach 8: Letter spacing -->
+    <div class="test-card">
+      <h3>8. Letter Spacing</h3>
+      <p class="desc">Added letter-spacing for alignment</p>
+      <div class="preview">
+        <pre class="approach-8">* &#x2590;&#x259B;&#x2588;&#x2588;&#x2588;&#x259C;&#x258C; *
+* &#x259D;&#x259C;&#x2588;&#x2588;&#x2588;&#x2588;&#x2588;&#x259B;&#x2598; *
+*  &#x2584;&#x2588; &#x2588;&#x2584;  *</pre>
+      </div>
+    </div>
+
+    <!-- Approach 9: Canvas -->
+    <div class="test-card">
+      <h3>9. Canvas Rendering</h3>
+      <p class="desc">Drawing directly to canvas</p>
+      <div class="preview approach-9">
+        <canvas id="canvas9" width="280" height="140"></canvas>
+      </div>
+    </div>
+
+    <!-- Approach 10: SVG -->
+    <div class="test-card">
+      <h3>10. SVG Text</h3>
+      <p class="desc">SVG with embedded text</p>
+      <div class="preview approach-10">
+        <svg viewBox="0 0 200 100" width="280" height="140">
+          <text x="100" y="30" text-anchor="middle" font-size="20">* &#x2590;&#x259B;&#x2588;&#x2588;&#x2588;&#x259C;&#x258C; *</text>
+          <text x="100" y="55" text-anchor="middle" font-size="20">* &#x259D;&#x259C;&#x2588;&#x2588;&#x2588;&#x2588;&#x2588;&#x259B;&#x2598; *</text>
+          <text x="100" y="80" text-anchor="middle" font-size="20">*  &#x2584;&#x2588; &#x2588;&#x2584;  *</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Approach 11: Simplified ASCII -->
+    <div class="test-card">
+      <h3>11. Simplified ASCII</h3>
+      <p class="desc">Alternative chars that render better</p>
+      <div class="preview">
+        <pre class="approach-11">*  /####\  *
+* |######| *
+*   || ||   *</pre>
+      </div>
+    </div>
+
+    <!-- Approach 12: xterm.js -->
+    <div class="test-card">
+      <h3>12. xterm.js (Terminal)</h3>
+      <p class="desc">Same as preview.html - TRUE terminal rendering</p>
+      <div class="preview">
+        <div id="terminal12" class="approach-12"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.min.js"></script>
+  <script>
+    // Approach 9: Canvas rendering
+    const canvas = document.getElementById('canvas9');
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, 280, 140);
+    ctx.font = '24px "Cascadia Code", monospace';
+    ctx.fillStyle = '#00d4aa';
+    ctx.textAlign = 'center';
+    ctx.shadowColor = '#00d4aa';
+    ctx.shadowBlur = 10;
+    ctx.fillText('* \u2590\u259B\u2588\u2588\u2588\u259C\u258C *', 140, 40);
+    ctx.fillText('* \u259D\u259C\u2588\u2588\u2588\u2588\u2588\u259B\u2598 *', 140, 70);
+    ctx.fillText('*  \u2584\u2588 \u2588\u2584  *', 140, 100);
+
+    // Approach 12: xterm.js
+    const term = new Terminal({
+      cols: 20,
+      rows: 5,
+      theme: {
+        background: '#000000',
+        foreground: '#00d4aa',
+        cursor: '#000000'
+      },
+      fontFamily: '"Cascadia Code", monospace',
+      fontSize: 18,
+      lineHeight: 1.0,
+      cursorBlink: false
+    });
+    term.open(document.getElementById('terminal12'));
+    term.writeln('');
+    term.writeln('  * \x1b[38;2;0;212;170m\u2590\u259B\u2588\u2588\u2588\u259C\u258C\x1b[0m *');
+    term.writeln(' * \x1b[38;2;0;212;170m\u259D\u259C\u2588\u2588\u2588\u2588\u2588\u259B\u2598\x1b[0m *');
+    term.writeln('  *  \x1b[38;2;0;212;170m\u2584\u2588 \u2588\u2584\x1b[0m  *');
+  </script>
+</body>
+</html>
