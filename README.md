@@ -1,24 +1,8 @@
-# Clawd Code Club - Mint Skill
+# Clawd Code Club
 
 <div align="center">
 
-```
-   ██████╗ ██████╗ ██████╗
-  ██╔════╝██╔════╝██╔════╝
-  ██║     ██║     ██║
-  ██║     ██║     ██║
-  ╚██████╗╚██████╗╚██████╗
-   ╚═════╝ ╚═════╝ ╚═════╝
-   CLAUDE   CODE   CLUB
-```
-
 ![Clawd](https://ipfs.io/ipfs/bafybeias5ulkvhpkj5z2s7pqcvpqbw4ehebxbi6wnragvnmmuyabtxdyay/0001.png)
-
-```
-     * ▐▛███▜▌ *
-    * ▝▜█████▛▘ *
-     *  ▘▘ ▝▝  *
-```
 
 **Proof you ship with Claude**
 
@@ -63,10 +47,10 @@ This will:
 ## Safety & Security
 
 ```
-✓ Safe to mint - no private keys stored
-✓ Your wallet signs transactions locally
-✓ Open source - audit the code yourself
-✓ No API keys required
+Safe to mint - no private keys stored
+Your wallet signs transactions locally
+Open source - audit the code yourself
+No API keys required
 ```
 
 ### What We DON'T Store:
@@ -100,45 +84,6 @@ This will:
 
 ---
 
-## File Structure
-
-```
-skill/
-├── README.md          # This file
-├── SKILL.md           # Full skill documentation
-├── mint.md            # Deployment skill docs
-├── scripts/           # Deployment scripts
-│   ├── deploy.ts      # Deploy candy machine
-│   └── resume.ts      # Resume failed deploy
-└── templates/         # Config templates
-    ├── collection-config.json
-    └── metadata-template.json
-```
-
----
-
-## Links
-
-- **Mint Page**: http://localhost:3456 (after running `/mint-clawds`)
-- **Explorer**: [View Collection on Solana](https://explorer.solana.com/address/AkcKbQ5gXkg6Kz7ESWKAJb2i8J7ZKHxDRBZ7JqQ9vTGE)
-- **X Community**: [@ClaudCodeClub](https://x.com/i/communities/2008805891269931266)
-
----
-
 ## License
 
 MIT License - Built with Claude Code
-
----
-
-<div align="center">
-
-```
-     * ▐▛███▜▌ *
-    * ▝▜█████▛▘ *
-     *  ▘▘ ▝▝  *
-```
-
-**Join the Club**
-
-</div>
