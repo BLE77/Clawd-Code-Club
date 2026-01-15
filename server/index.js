@@ -35,7 +35,7 @@ import {
   getProgramState,
   getMintRegistry,
 } from './registry.js';
-import { generateAnimatedHTML } from '../artwork/artwork-generator.js';
+// artwork-generator not needed - using IPFS for artwork
 import {
   previewAssignment,
   assignPool,
@@ -87,9 +87,7 @@ app.use((req, res, next) => {
 const uiPath = join(__dirname, '..', 'ui');
 app.use(express.static(uiPath));
 
-// Serve artwork files
-const artworkPath = join(__dirname, '..', 'artwork');
-app.use('/artwork', express.static(artworkPath));
+// Artwork served from IPFS
 
 // Serve collection files (the actual 777 NFTs)
 const collectionPath = join(__dirname, '..', 'collection');
@@ -254,11 +252,8 @@ app.get('/api/traits', requireAuth, async (req, res) => {
     // Get pool preview based on achievements
     const preview = previewAssignment(stats.achievements);
 
-    // Generate preview HTML for iframe display using sample traits
+    // Preview HTML served from IPFS
     let previewHtml = null;
-    if (preview.sampleTraits) {
-      previewHtml = generateAnimatedHTML(preview.sampleTraits, preview.sampleTokenId || 'PREVIEW');
-    }
 
     res.json({
       // Pool-based assignment info
@@ -315,12 +310,8 @@ app.get('/api/preview', requireAuth, async (req, res) => {
     // Generate traits
     const traits = generateTraits(githubData);
 
-    // Generate the actual artwork HTML
-    const html = generateAnimatedHTML(traits, 'PREVIEW');
-
-    // Return as HTML
-    res.setHeader('Content-Type', 'text/html');
-    res.send(html);
+    // Artwork is on IPFS - return traits as JSON instead
+    res.json({ traits });
 
   } catch (err) {
     console.error('Error generating preview:', err);
